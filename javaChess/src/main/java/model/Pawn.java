@@ -6,6 +6,8 @@ import model.Game.Color;
 
 public class Pawn extends Piece
 {
+	private boolean alreadyMoved = false;
+
 	public Pawn(Color color)
 	{
 		this.id = "p";
@@ -17,9 +19,17 @@ public class Pawn extends Piece
 	private void goFront(Board board, int x, int y)
 	{
 		if (this.color == Color.WHITE)
+		{
 			this.checkCase(board, --x, y);
+			if (!this.alreadyMoved)
+				this.checkCase(board, --x, y);
+		}
 		else if (this.color == Color.BLACK)
+		{
 			this.checkCase(board, ++x, y);
+			if (!this.alreadyMoved)
+				this.checkCase(board, ++x, y);
+		}
 	}
 
 	private void goFrontLeft(Board board, int x, int y)
@@ -76,4 +86,9 @@ public class Pawn extends Piece
 		this.goFrontRight(board, x, y);
 	}
 	
+	public void move()
+	{
+		this.alreadyMoved = true;
+	}
+
 }

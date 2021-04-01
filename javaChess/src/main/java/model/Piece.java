@@ -54,4 +54,9 @@ public abstract class Piece
 	{
 		return this.file;
 	}
+
+	public boolean getIsPawn()
+	{
+		return this.isPawn;
+	}
 }

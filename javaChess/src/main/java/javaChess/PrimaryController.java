@@ -91,13 +91,9 @@ public class PrimaryController
             Piece piece = pos.getPiece();
             if (piece != null && piece.getColor() == Game.getTurn())
             {
-                // System.out.println(w.intValue() + " " + h.intValue());
                 this.validMoves = piece.getValidMoves(this.game.getBoard(), pos);
-                for (Case validPos : validMoves)
-                {
-                    System.out.println("validPos");
+                for (Case validPos : this.validMoves)
                     validPos.setColor(Color.RED);
-                }
                 this.w = w.intValue();
                 this.h = h.intValue();
                 this.game.setColor(Color.GREEN, w, h);
@@ -106,10 +102,18 @@ public class PrimaryController
         }
         else
         {
+            Case targetPos = this.game.getBoard().getPos(w, h);
+            if (this.validMoves.indexOf(targetPos) != -1)
+            {
+                Case sourcePos = this.game.getBoard().getPos(this.w, this.h);
+                this.game.move(sourcePos, targetPos);
+            }
             if ((this.w + this.h) % 2 == 0)
                 this.game.setColor(Color.WHITE, this.w, this.h);
             else
                 this.game.setColor(Color.BLACK, this.w, this.h);
+            for (Case pos : this.validMoves)
+                pos.resetColor();
             this.validMoves = null;
             this.isCaseSelected = false;
         }

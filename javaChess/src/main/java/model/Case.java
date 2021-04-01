@@ -78,4 +78,12 @@ public class Case
 	{
 		this.color = color;
 	}
+
+	public void resetColor()
+	{
+		if ((this.x + this.y) % 2 == 0)
+			this.color = Color.WHITE;
+		else
+			this.color = Color.BLACK;
+	}
 }

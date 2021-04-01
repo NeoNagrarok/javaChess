@@ -76,4 +76,14 @@ public class Game
 		this.board.setColor(color, w, h);
 	}
 
+	public void move(Case sourcePos, Case targetPos)
+	{
+		Piece piece = sourcePos.getPiece();
+		if (piece.getIsPawn())
+			((Pawn)piece).move();
+		targetPos.setPiece(piece);
+		sourcePos.deletePiece();
+		Game.switchTurn();
+	}
+
 }
