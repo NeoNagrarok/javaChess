@@ -7,7 +7,7 @@ public class Case
 	private Color color;
 	private int x;
 	private int y;
-	// private Piece piece;
+	private Piece piece = null;
 	public enum Check
 	{
 		NONE,
@@ -16,6 +16,7 @@ public class Case
 		BOTH
 	}
 	private Check check = Check.NONE;
+	private boolean isReachable = false;
 
 	public Case(int x, int y, Color color)
 	{
@@ -50,5 +51,25 @@ public class Case
 	public Color getColor()
 	{
 		return this.color;
+	}
+
+	public boolean getIsReachable()
+	{
+		return this.isReachable;
+	}
+
+	public Piece getPiece()
+	{
+		return this.piece;
+	}
+
+	public void setPiece(Piece piece)
+	{
+		this.piece = piece;
+	}
+
+	public void deletePiece()
+	{
+		this.piece = null;
 	}
 }
