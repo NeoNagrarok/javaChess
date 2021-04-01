@@ -41,22 +41,23 @@ public class Pawn extends Piece
 	@Override
 	protected boolean checkCase(Board board, int x, int y)
 	{
-		if (x < 0 || x > Board.WIDTH || y < 0 || y > Board.HEIGHT)
+		if (x < 0 || x >= Board.WIDTH || y < 0 || y >= Board.HEIGHT)
 			return false;
-		Case pos = board.getCases().get(x).get(y);
+		Case pos = board.getPos(x, y);
 		Piece piece = pos.getPiece();
 		if (piece != null)
 			return false;
+		validMoves.add(pos);
 		return true;
 	}
 
 	private void canTake(Board board, int x, int y)
 	{
-		if (x < 0 || x > Board.WIDTH || y < 0 || y > Board.HEIGHT)
+		if (x < 0 || x >= Board.WIDTH || y < 0 || y >= Board.HEIGHT)
 			return;
-		Case pos = board.getCases().get(x).get(y);
+		Case pos = board.getPos(x, y);
 		Piece piece = pos.getPiece();
-		if (piece != null && piece.getColor() == this.getColor())
+		if (piece != null && piece.getColor() != this.getColor())
 		{
 			validMoves.add(pos);
 			return;

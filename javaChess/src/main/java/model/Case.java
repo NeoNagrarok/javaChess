@@ -73,4 +73,9 @@ public class Case
 	{
 		this.piece = null;
 	}
+
+	public void setColor(Color color)
+	{
+		this.color = color;
+	}
 }

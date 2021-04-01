@@ -8,7 +8,7 @@ public class Game
 	public enum Color
 	{
 		BLACK,
-		WHITE
+		WHITE, GREEN, RED
 	}
 	static private Color turn = Color.WHITE;
 	static private Game instance = null;
@@ -69,6 +69,11 @@ public class Game
 	public ArrayList<ArrayList<Case>> getCases()
 	{
 		return this.board.getCases();
+	}
+
+	public void setColor(Color color, int w, int h)
+	{
+		this.board.setColor(color, w, h);
 	}
 
 }

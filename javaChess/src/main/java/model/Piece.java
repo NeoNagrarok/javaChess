@@ -24,13 +24,14 @@ public abstract class Piece
 
 	protected boolean checkCase(Board board, int x, int y)
 	{
-		if (x < 0 || x > Board.WIDTH || y < 0 || y > Board.HEIGHT)
+		if (x < 0 || x >= Board.WIDTH || y < 0 || y >= Board.HEIGHT)
 			return false;
-		Case pos = board.getCases().get(x).get(y);
+		Case pos = board.getPos(x, y);
 		Piece piece = pos.getPiece();
-		if (piece != null && piece.getColor() == this.getColor())
+		if (piece != null)
 		{
-			validMoves.add(pos);
+			if (piece.getColor() != this.getColor())
+				validMoves.add(pos);
 			return false;
 		}
 

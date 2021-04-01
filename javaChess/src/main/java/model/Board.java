@@ -59,4 +59,14 @@ public class Board
 		}
 		return cases;
 	}
+
+	public void setColor(Color color, int w, int h)
+	{
+		this.cases.get(w).get(h).setColor(color);
+	}
+
+	public Case getPos(int x, int y)
+	{
+		return this.cases.get(x).get(y);
+	}
 }
