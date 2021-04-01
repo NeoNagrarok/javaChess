@@ -10,12 +10,63 @@ public class Knight extends Piece
 	{
 		this.id = "k";
 		this.color = color;
+		this.file = color.toString().toLowerCase() + "_knight.png";
+	}
+
+	private void goUpLeft(Board board, int x, int y)
+	{
+		this.checkCase(board, (x - 2), --y);
+	}
+
+	private void goUpRight(Board board, int x, int y)
+	{
+		this.checkCase(board, (x - 2), ++y);
+	}
+
+	private void goLeftUp(Board board, int x, int y)
+	{
+		this.checkCase(board, --x, (y - 2));
+	}
+
+	private void goRightUp(Board board, int x, int y)
+	{
+		this.checkCase(board, --x, (y + 2));
+	}
+
+	private void goDownLeft(Board board, int x, int y)
+	{
+		this.checkCase(board, (x + 2), --y);
+	}
+
+	private void goDownRight(Board board, int x, int y)
+	{
+		this.checkCase(board, (x + 2), ++y);
+	}
+
+	private void goLeftDown(Board board, int x, int y)
+	{
+		this.checkCase(board, ++x, (y - 2));
+	}
+
+	private void goRightDone(Board board, int x, int y)
+	{
+		this.checkCase(board, ++x, (y + 2));
 	}
 
 	@Override
-	public ArrayList<Case> getValidMoves() {
-		// TODO Auto-generated method stub
-		return null;
+	protected void makeValidMoves(Board board, Case pos)
+	{
+		int x = pos.getX();
+		int y = pos.getY();
+
+		this.goUpLeft(board, x, y);
+		this.goUpRight(board, x, y);
+		this.goLeftUp(board, x, y);
+		this.goRightUp(board, x, y);
+		this.goDownLeft(board, x, y);
+		this.goDownRight(board, x, y);
+		this.goLeftDown(board, x, y);
+		this.goRightDone(board, x, y);
 	}
 	
 }

@@ -31,6 +31,7 @@ public class Case
 		this.y = original.getY();
 		this.color = original.getColor();
 		this.check = original.getCheck();
+		this.piece = original.getPiece();
 	}
 
 	public int getX()

@@ -55,7 +55,7 @@ public class Board
 		{
 			cases.add(new ArrayList<>());
 			for (int h = 0; h < Board.HEIGHT; h++)
-				cases.get(w).add(new Case(this.cases.get(w).get(w)));
+				cases.get(w).add(new Case(this.cases.get(w).get(h)));
 		}
 		return cases;
 	}

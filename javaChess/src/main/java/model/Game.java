@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-
 public class Game
 {
 	private Board board;
@@ -11,7 +10,7 @@ public class Game
 		BLACK,
 		WHITE
 	}
-	private Color turn = Color.WHITE;
+	static private Color turn = Color.WHITE;
 	static private Game instance = null;
 
 	private Game()
@@ -26,23 +25,23 @@ public class Game
 		return Game.instance == null ? new Game() : Game.instance;
 	}
 
-	public Color getTurn()
+	static public Color getTurn()
 	{
-		return this.turn;
+		return Game.turn;
 	}
 
-	public void switchTurn()
+	static public void switchTurn()
 	{
-		switch (this.turn)
+		switch (Game.turn)
 		{
 			case BLACK:
-				this.turn = Color.WHITE;
+				Game.turn = Color.WHITE;
 			break;
 			case WHITE:
-				this.turn = Color.BLACK;
+				Game.turn = Color.BLACK;
 			break;
 			default:
-				this.turn = Color.WHITE;
+				Game.turn = Color.WHITE;
 			break;
 		}
 	}
@@ -65,6 +64,11 @@ public class Game
 	public void undo()
 	{
 		this.board = this.boardHistory.get(this.boardHistory.size() - 1);
+	}
+
+	public ArrayList<ArrayList<Case>> getCases()
+	{
+		return this.board.getCases();
 	}
 
 }
