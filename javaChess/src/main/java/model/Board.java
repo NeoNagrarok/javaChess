@@ -23,11 +23,12 @@ public class Board
 					this.cases.get(w).add(new Case(w, h, Color.WHITE));
 				else
 					this.cases.get(w).add(new Case(w, h, Color.BLACK));
-
+				PieceFactory.makePiece(this.cases.get(w).get(h));
 				/**
 				 * Display
 				 */
-				System.out.print(this.cases.get(w).get(h).getColor());
+				Case pos = this.cases.get(w).get(h);
+				System.out.print(pos.getPiece() == null ? pos.getColor() : pos.getPiece().id);
 				if (h == 7)
 					System.out.println();
 			}

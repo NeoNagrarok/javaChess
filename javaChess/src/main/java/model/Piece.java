@@ -6,8 +6,9 @@ import model.Game.Color;
 
 public abstract class Piece
 {
-	private Color color;
-	private boolean isPawn;
+	protected Color color;
+	protected boolean isPawn;
+	public String id;
 
 	abstract public ArrayList<Case> getValidMoves();
 
