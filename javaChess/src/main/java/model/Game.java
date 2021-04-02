@@ -78,12 +78,11 @@ public class Game
 	public void undo()
 	{
 		int index = this.boardHistory.size() - 1;
-		this.board = this.boardHistory.get(index);
+		if (index < 1)
+			return;
+		this.board = new Board(this.boardHistory.get(index));
 		this.boardHistory.remove(index);
-		if (Game.turn == Color.BLACK)
-			Game.turn = Color.WHITE;
-		else if (Game.turn == Color.WHITE)
-			Game.turn = Color.BLACK;
+		Game.switchTurn();
 		this.makeCheckState();
 	}
 
@@ -99,6 +98,7 @@ public class Game
 
 	public void move(Case sourcePos, Case targetPos)
 	{
+		this.snapshotBoard();
 		if (sourcePos == null)
 			return;
 		Piece piece = sourcePos.getPiece();
@@ -108,7 +108,6 @@ public class Game
 		sourcePos.deletePiece();
 		Game.switchTurn();
 		this.makeCheckState();
-		this.snapshotBoard();
 	}
 
 	public void makeCheckState()
@@ -139,11 +138,11 @@ public class Game
 				}
 			}
 		System.out.println(Game.checkCases.get(Color.BLACK).size());
-		Game.checkCases.replace(Color.BLACK, Game.checkCases.get(Color.BLACK), Game.removeDuplicates(Game.checkCases.get(Color.BLACK)));
+		// Game.checkCases.replace(Color.BLACK, Game.checkCases.get(Color.BLACK), Game.removeDuplicates(Game.checkCases.get(Color.BLACK)));
 		System.out.println(Game.checkCases.get(Color.BLACK).size());
 		System.out.println("-----------------------------");
 		System.out.println(Game.checkCases.get(Color.WHITE).size());
-		Game.checkCases.replace(Color.WHITE, Game.checkCases.get(Color.WHITE), Game.removeDuplicates(Game.checkCases.get(Color.WHITE)));
+		// Game.checkCases.replace(Color.WHITE, Game.checkCases.get(Color.WHITE), Game.removeDuplicates(Game.checkCases.get(Color.WHITE)));
 		System.out.println(Game.checkCases.get(Color.WHITE).size());
 		System.out.println("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°");
 	}

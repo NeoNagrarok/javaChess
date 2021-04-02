@@ -21,7 +21,7 @@ public class Case
 		this.x = original.getX();
 		this.y = original.getY();
 		this.color = original.getColor();
-		this.piece = original.getPiece();
+		this.piece = PieceFactory.makePieceFromeId(original.getPiece());
 	}
 
 	public int getX()

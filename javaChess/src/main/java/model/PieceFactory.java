@@ -40,4 +40,24 @@ public class PieceFactory
 			else if (x == 1 || x == 6)
 				pos.setPiece(new Pawn(colorPos.get(Integer.valueOf(x))));
 	}
+
+	static public Piece makePieceFromeId(Piece piece)
+	{
+		if (piece != null && piece.id != null)
+			switch (piece.id) {
+				case "r":
+					return new Rook(piece);
+				case "b":
+					return new Bishop(piece);
+				case "k":
+					return new Knight(piece);
+				case "Q":
+					return new Queen(piece);
+				case "K":
+					return new King(piece);
+				case "p":
+					return new Pawn(piece);
+			}
+		return null;
+	}
 }

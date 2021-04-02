@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
 import model.Game.Color;
 
 public class Rook extends Piece
@@ -11,6 +9,11 @@ public class Rook extends Piece
 		this.id = "r";
 		this.color = color;
 		this.file = color.toString().toLowerCase() + "_rook.png";
+	}
+
+	public Rook(Piece origin)
+	{
+		super(origin);
 	}
 
 	private void goUp(Board board, int x, int y)
@@ -38,6 +41,7 @@ public class Rook extends Piece
 	{
 		int x = pos.getX();
 		int y = pos.getY();
+		this.pos = pos;
 
 		this.goUp(board, x, y);
 		this.goDown(board, x, y);

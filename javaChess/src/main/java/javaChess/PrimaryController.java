@@ -3,7 +3,6 @@ package javaChess;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -39,9 +38,13 @@ public class PrimaryController
     {
         if (Game.debug)
         {
-            ArrayList<Case> checkCasesCurrentTurn = Game.checkCases.get(Game.getTurn());
+            ArrayList<Case> checkCasesCurrentTurn = null;
+            if (Game.getTurn() == Color.BLACK)
+                checkCasesCurrentTurn = Game.checkCases.get(Color.WHITE);
+            else if (Game.getTurn() == Color.WHITE)
+                checkCasesCurrentTurn = Game.checkCases.get(Color.BLACK);
             for (Case pos : checkCasesCurrentTurn)
-                if (pos.getColor() != Color.RED)
+                if (pos.getColor() != Color.RED && pos.getColor() != Color.GREEN)
                     pos.setColor(Color.ORANGE);
         }
         ArrayList<ArrayList<Case>> cases = this.game.getCases();
@@ -130,14 +133,9 @@ public class PrimaryController
                 this.game.setColor(Color.BLACK, this.w, this.h);
             for (Case pos : this.validMoves)
                 pos.resetColor();
-            // if (Game.debug)
-            // {
-            //     ArrayList<Case> checkCasesCurrentTurn = Game.checkCases.get(Game.getTurn());
-            //     for (Case pos : checkCasesCurrentTurn)
-            //         pos.setColor(Color.ORANGE);
-            // }
             this.validMoves = null;
             this.isCaseSelected = false;
+            this.game.makeCheckState();
         }
         this.updateUI();
     }

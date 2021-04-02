@@ -6,6 +6,8 @@ import model.Game.Color;
 
 public class Pawn extends Piece
 {
+	private boolean isBlocked = false;
+
 	public Pawn(Color color)
 	{
 		this.id = "p";
@@ -14,18 +16,23 @@ public class Pawn extends Piece
 		this.file = color.toString().toLowerCase() + "_pawn.png";
 	}
 
+	public Pawn(Piece origin)
+	{
+		super(origin);
+	}
+
 	private void goFront(Board board, int x, int y)
 	{
 		if (this.color == Color.WHITE)
 		{
 			this.checkCase(board, --x, y);
-			if (!this.alreadyMoved)
+			if (!this.isBlocked && !this.alreadyMoved)
 				this.checkCase(board, --x, y);
 		}
 		else if (this.color == Color.BLACK)
 		{
 			this.checkCase(board, ++x, y);
-			if (!this.alreadyMoved)
+			if (!this.isBlocked && !this.alreadyMoved)
 				this.checkCase(board, ++x, y);
 		}
 	}
@@ -70,8 +77,12 @@ public class Pawn extends Piece
 		Case pos = board.getPos(x, y);
 		Piece piece = pos.getPiece();
 		if (piece != null)
+		{
+			this.isBlocked = true;
 			return false;
-		if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+		}
+		this.isBlocked = false;
+		if (!this.isNormalMove || !this.isAlwaysCheck(board.getPos(x, y)))
 			validMoves.add(pos);
 		return true;
 	}
@@ -83,7 +94,7 @@ public class Pawn extends Piece
 		Case pos = board.getPos(x, y);
 		Piece piece = pos.getPiece();
 		if (piece != null && piece.getColor() != this.getColor())
-			if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+			if (!this.isNormalMove || !this.isAlwaysCheck(board.getPos(x, y)))
 				validMoves.add(pos);
 		return;
 	}
@@ -93,8 +104,7 @@ public class Pawn extends Piece
 		if (x < 0 || x >= Board.WIDTH || y < 0 || y >= Board.HEIGHT)
 			return;
 		Case pos = board.getPos(x, y);
-		if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
-			validMoves.add(pos);
+		validMoves.add(pos);
 		return;
 	}
 
@@ -103,6 +113,7 @@ public class Pawn extends Piece
 	{
 		int x = pos.getX();
 		int y = pos.getY();
+		this.pos = pos;
 
 		this.goFront(board, x, y);
 		this.goFrontLeft(board, x, y);
@@ -114,6 +125,7 @@ public class Pawn extends Piece
 	{
 		int x = pos.getX();
 		int y = pos.getY();
+		this.pos = pos;
 
 		this.goFrontLeftCheck(board, x, y);
 		this.goFrontRightCheck(board, x, y);

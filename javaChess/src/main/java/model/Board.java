@@ -24,17 +24,22 @@ public class Board
 				else
 					this.cases.get(w).add(new Case(w, h, Color.BLACK));
 				PieceFactory.makePiece(this.cases.get(w).get(h));
-				/**
-				 * Display
-				 */
-				Case pos = this.cases.get(w).get(h);
-				System.out.print(pos.getPiece() == null ? pos.getColor() : pos.getPiece().id);
-				if (h == 7)
-					System.out.println();
 			}
 		}
+		this.displayConsole();
 	}
 
+	public void displayConsole()
+	{
+		for (ArrayList<Case> column : this.cases)
+			for (Case pos : column)
+			{
+				System.out.print(pos.getPiece() == null ? pos.getColor() : pos.getPiece().id);
+					if (pos.getY() == 7)
+						System.out.println();
+			}
+	}
+	
 	public Board(Board board)
 	{
 		this.cases = board.getCases();
@@ -42,7 +47,6 @@ public class Board
 
 	public ArrayList<ArrayList<Case>> getCases()
 	{
-		/** COPY TODO */
 		ArrayList<ArrayList<Case>> cases = new ArrayList<>();
 		for (int w = 0; w < Board.WIDTH; w++)
 		{

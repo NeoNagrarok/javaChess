@@ -14,10 +14,22 @@ public abstract class Piece
 	protected String file;
 	protected Case pos;
 	protected boolean alreadyMoved = false;
+	protected boolean isNormalMove = true;
+
+	public Piece(){}
+
+	public Piece(Piece origin)
+	{
+		this.id = origin.id;
+		this.color = origin.getColor();
+		this.isPawn = origin.getIsPawn();
+		this.file = origin.getFile();
+		this.alreadyMoved = origin.getAlreadyMoved();
+	}
 
 	public ArrayList<Case> getValidMoves(Board board, Case pos)
 	{
-		this.pos = pos;
+		this.isNormalMove = true;
 		this.validMoves = new ArrayList<>();
 		this.makeValidMoves(board, pos);
 		return this.validMoves;
@@ -25,7 +37,7 @@ public abstract class Piece
 
 	public ArrayList<Case> getCheckCases(Board board, Case pos)
 	{
-		this.pos = pos;
+		this.isNormalMove = false;
 		this.validMoves = new ArrayList<>();
 		this.makeValidMoves(board, pos);
 		return this.validMoves;
@@ -42,12 +54,12 @@ public abstract class Piece
 		if (piece != null)
 		{
 			if (piece.getColor() != this.getColor())
-				if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+				if (!this.isNormalMove || !this.isAlwaysCheck(board.getPos(x, y)))
 					validMoves.add(pos);
 			return false;
 		}
 
-		if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+		if (!this.isNormalMove || !this.isAlwaysCheck(board.getPos(x, y)))
 			validMoves.add(pos);
 		return true;
 	}
@@ -67,17 +79,26 @@ public abstract class Piece
 		return this.isPawn;
 	}
 
-	protected boolean isAlwaysCheck(Case sourcePos, Case targetPos)
+	public boolean getAlreadyMoved()
 	{
-		/** TODO for tests Only */
-		return false;
-		// if (Game.getTurn() != Game.kingInCheck)
-		// 	return false;
-		// Color saveKingInCheck = Game.kingInCheck;
-		// Game game = Game.getInstance();
-		// game.move(sourcePos, targetPos);
-		// boolean result = saveKingInCheck == Game.kingInCheck;
-		// game.undo();
-		// return result;
+		return this.alreadyMoved;
+	}
+
+	protected boolean isAlwaysCheck(Case targetPos)
+	{
+		// /** TODO for tests Only */
+		// return false;
+		if (Game.getTurn() != Game.kingInCheck)
+			return false;
+		Color saveKingInCheck = Game.kingInCheck;
+		System.out.println("Save : " + saveKingInCheck);
+		Game game = Game.getInstance();
+		game.move(this.pos, targetPos);
+		System.out.println("New save : " + Game.kingInCheck);
+		boolean result = false;
+		if (saveKingInCheck == Game.kingInCheck)
+			result = true;
+		game.undo();
+		return result;
 	}
 }
