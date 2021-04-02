@@ -92,13 +92,20 @@ public abstract class Piece
 			return false;
 		Color saveKingInCheck = Game.kingInCheck;
 		System.out.println("Save : " + saveKingInCheck);
-		Game game = Game.getInstance();
-		game.move(this.pos, targetPos);
+		Game newGame = Game.copy();
+		Board newBoard = newGame.getBoard();
+		newGame.move(
+			newBoard.getPos(this.pos.getX(), this.pos.getY()),
+			newBoard.getPos(targetPos.getX(), targetPos.getY())
+		);
 		System.out.println("New save : " + Game.kingInCheck);
 		boolean result = false;
 		if (saveKingInCheck == Game.kingInCheck)
 			result = true;
-		game.undo();
+		Game.kingInCheck = saveKingInCheck;
+		Game.switchTurn();
+		System.out.println(result);
+		System.out.println("-----------------------------");
 		return result;
 	}
 }

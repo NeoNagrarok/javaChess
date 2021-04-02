@@ -32,11 +32,25 @@ public class Game
 		this.makeCheckState();
 	}
 
+	private Game(Board board)
+	{
+		this.board = new Board(board);
+	}
+
 	static public Game getInstance()
 	{
 		if (Game.instance == null)
 			Game.instance = new Game();
 		return Game.instance;
+	}
+
+	static public Game copy()
+	{
+		Game game = new Game(Game.getInstance().getBoard());
+		game.boardHistory = new ArrayList<>();
+		game.snapshotBoard();
+		game.makeCheckState();
+		return game;
 	}
 
 	static public Color getTurn()
@@ -112,6 +126,7 @@ public class Game
 
 	public void makeCheckState()
 	{
+		/** TODO Be sure there is good checked cases ... :S */
 		Game.checkCases = new HashMap<>();
 		Game.checkCases.put(Color.BLACK, new ArrayList<>());
 		Game.checkCases.put(Color.WHITE, new ArrayList<>());
@@ -122,7 +137,7 @@ public class Game
 				Case pos = this.board.getPos(w, h);
 				pos.resetColor();
 				Piece piece = pos.getPiece();
-				if (piece != null)
+				if (piece != null && piece.getColor() != Game.getTurn())
 				{
 					ArrayList<Case> validMoves = piece.getCheckCases(
 						this.board, pos
@@ -131,20 +146,20 @@ public class Game
 					{
 						Game.checkCases.get(piece.getColor()).add(posCheck);
 						Piece pieceChecked = posCheck.getPiece();
-						if (pieceChecked != null &&  pieceChecked.id == "K")
+						if (pieceChecked != null && pieceChecked.id == "K")
 							Game.kingInCheck = pieceChecked.getColor();
 
 					}
 				}
 			}
-		System.out.println(Game.checkCases.get(Color.BLACK).size());
-		// Game.checkCases.replace(Color.BLACK, Game.checkCases.get(Color.BLACK), Game.removeDuplicates(Game.checkCases.get(Color.BLACK)));
-		System.out.println(Game.checkCases.get(Color.BLACK).size());
-		System.out.println("-----------------------------");
-		System.out.println(Game.checkCases.get(Color.WHITE).size());
-		// Game.checkCases.replace(Color.WHITE, Game.checkCases.get(Color.WHITE), Game.removeDuplicates(Game.checkCases.get(Color.WHITE)));
-		System.out.println(Game.checkCases.get(Color.WHITE).size());
-		System.out.println("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°");
+		// System.out.println(Game.checkCases.get(Color.BLACK).size());
+		Game.checkCases.replace(Color.BLACK, Game.checkCases.get(Color.BLACK), Game.removeDuplicates(Game.checkCases.get(Color.BLACK)));
+		// System.out.println(Game.checkCases.get(Color.BLACK).size());
+		// System.out.println("-----------------------------");
+		// System.out.println(Game.checkCases.get(Color.WHITE).size());
+		Game.checkCases.replace(Color.WHITE, Game.checkCases.get(Color.WHITE), Game.removeDuplicates(Game.checkCases.get(Color.WHITE)));
+		// System.out.println(Game.checkCases.get(Color.WHITE).size());
+		// System.out.println("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°");
 	}
 
 	public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list)

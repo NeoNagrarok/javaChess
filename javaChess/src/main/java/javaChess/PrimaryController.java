@@ -135,7 +135,6 @@ public class PrimaryController
                 pos.resetColor();
             this.validMoves = null;
             this.isCaseSelected = false;
-            this.game.makeCheckState();
         }
         this.updateUI();
     }
