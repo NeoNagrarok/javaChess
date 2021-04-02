@@ -37,6 +37,13 @@ public class PrimaryController
 
     private void updateUI()
     {
+        if (Game.debug)
+        {
+            ArrayList<Case> checkCasesCurrentTurn = Game.checkCases.get(Game.getTurn());
+            for (Case pos : checkCasesCurrentTurn)
+                if (pos.getColor() != Color.RED)
+                    pos.setColor(Color.ORANGE);
+        }
         ArrayList<ArrayList<Case>> cases = this.game.getCases();
         for (int w = 0; w < Board.WIDTH; w++)
             for (int h = 0; h < Board.HEIGHT; h++)
@@ -47,6 +54,8 @@ public class PrimaryController
                     child.setStyle("-fx-background-color : #5A5");
                 else if (pos.getColor() == Color.RED)
                     child.setStyle("-fx-background-color : #A55");
+                else if (pos.getColor() == Color.ORANGE)
+                    child.setStyle("-fx-background-color : #A95");
                 else if (pos.getColor() == Color.BLACK)
                     child.setStyle("-fx-background-color : #555");
                 else if (pos.getColor() == Color.WHITE)
@@ -73,6 +82,13 @@ public class PrimaryController
     @FXML
     private void switchToSecondary() throws IOException {
         App.setRoot("secondary");
+    }
+
+    @FXML
+    private void undo()
+    {
+        Game.getInstance().undo();
+        this.updateUI();
     }
 
     @FXML
@@ -114,6 +130,12 @@ public class PrimaryController
                 this.game.setColor(Color.BLACK, this.w, this.h);
             for (Case pos : this.validMoves)
                 pos.resetColor();
+            // if (Game.debug)
+            // {
+            //     ArrayList<Case> checkCasesCurrentTurn = Game.checkCases.get(Game.getTurn());
+            //     for (Case pos : checkCasesCurrentTurn)
+            //         pos.setColor(Color.ORANGE);
+            // }
             this.validMoves = null;
             this.isCaseSelected = false;
         }

@@ -8,15 +8,6 @@ public class Case
 	private int x;
 	private int y;
 	private Piece piece = null;
-	public enum Check
-	{
-		NONE,
-		BLACK,
-		WHITE,
-		BOTH
-	}
-	private Check check = Check.NONE;
-	private boolean isReachable = false;
 
 	public Case(int x, int y, Color color)
 	{
@@ -30,7 +21,6 @@ public class Case
 		this.x = original.getX();
 		this.y = original.getY();
 		this.color = original.getColor();
-		this.check = original.getCheck();
 		this.piece = original.getPiece();
 	}
 
@@ -44,19 +34,9 @@ public class Case
 		return this.y;
 	}
 
-	public Check getCheck()
-	{
-		return this.check;
-	}
-
 	public Color getColor()
 	{
 		return this.color;
-	}
-
-	public boolean getIsReachable()
-	{
-		return this.isReachable;
 	}
 
 	public Piece getPiece()

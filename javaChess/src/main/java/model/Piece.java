@@ -12,9 +12,20 @@ public abstract class Piece
 	protected boolean isPawn;
 	protected ArrayList<Case> validMoves;
 	protected String file;
+	protected Case pos;
+	protected boolean alreadyMoved = false;
 
 	public ArrayList<Case> getValidMoves(Board board, Case pos)
 	{
+		this.pos = pos;
+		this.validMoves = new ArrayList<>();
+		this.makeValidMoves(board, pos);
+		return this.validMoves;
+	}
+
+	public ArrayList<Case> getCheckCases(Board board, Case pos)
+	{
+		this.pos = pos;
 		this.validMoves = new ArrayList<>();
 		this.makeValidMoves(board, pos);
 		return this.validMoves;
@@ -31,18 +42,14 @@ public abstract class Piece
 		if (piece != null)
 		{
 			if (piece.getColor() != this.getColor())
-				validMoves.add(pos);
+				if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+					validMoves.add(pos);
 			return false;
 		}
 
-		validMoves.add(pos);
+		if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+			validMoves.add(pos);
 		return true;
-	}
-
-	public void move(Case origin, Case dest)
-	{
-		dest.setPiece(origin.getPiece());
-		origin.deletePiece();
 	}
 
 	public Color getColor()
@@ -58,5 +65,19 @@ public abstract class Piece
 	public boolean getIsPawn()
 	{
 		return this.isPawn;
+	}
+
+	protected boolean isAlwaysCheck(Case sourcePos, Case targetPos)
+	{
+		/** TODO for tests Only */
+		return false;
+		// if (Game.getTurn() != Game.kingInCheck)
+		// 	return false;
+		// Color saveKingInCheck = Game.kingInCheck;
+		// Game game = Game.getInstance();
+		// game.move(sourcePos, targetPos);
+		// boolean result = saveKingInCheck == Game.kingInCheck;
+		// game.undo();
+		// return result;
 	}
 }

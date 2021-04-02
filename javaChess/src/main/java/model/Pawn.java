@@ -6,8 +6,6 @@ import model.Game.Color;
 
 public class Pawn extends Piece
 {
-	private boolean alreadyMoved = false;
-
 	public Pawn(Color color)
 	{
 		this.id = "p";
@@ -48,6 +46,22 @@ public class Pawn extends Piece
 			this.canTake(board, ++x, ++y);
 	}
 
+	private void goFrontLeftCheck(Board board, int x, int y)
+	{
+		if (this.color == Color.WHITE)
+			this.canCheck(board, --x, --y);
+		else if (this.color == Color.BLACK)
+			this.canCheck(board, ++x, --y);
+	}
+
+	private void goFrontRightCheck(Board board, int x, int y)
+	{
+		if (this.color == Color.WHITE)
+			this.canCheck(board, --x, ++y);
+		else if (this.color == Color.BLACK)
+			this.canCheck(board, ++x, ++y);
+	}
+
 	@Override
 	protected boolean checkCase(Board board, int x, int y)
 	{
@@ -57,7 +71,8 @@ public class Pawn extends Piece
 		Piece piece = pos.getPiece();
 		if (piece != null)
 			return false;
-		validMoves.add(pos);
+		if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+			validMoves.add(pos);
 		return true;
 	}
 
@@ -68,10 +83,18 @@ public class Pawn extends Piece
 		Case pos = board.getPos(x, y);
 		Piece piece = pos.getPiece();
 		if (piece != null && piece.getColor() != this.getColor())
-		{
-			validMoves.add(pos);
+			if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+				validMoves.add(pos);
+		return;
+	}
+
+	private void canCheck(Board board, int x, int y)
+	{
+		if (x < 0 || x >= Board.WIDTH || y < 0 || y >= Board.HEIGHT)
 			return;
-		}
+		Case pos = board.getPos(x, y);
+		if (!this.isAlwaysCheck(this.pos, board.getPos(x, y)))
+			validMoves.add(pos);
 		return;
 	}
 
@@ -86,9 +109,27 @@ public class Pawn extends Piece
 		this.goFrontRight(board, x, y);
 	}
 	
+
+	private void makeCheckCases(Board board, Case pos)
+	{
+		int x = pos.getX();
+		int y = pos.getY();
+
+		this.goFrontLeftCheck(board, x, y);
+		this.goFrontRightCheck(board, x, y);
+	}
+
 	public void move()
 	{
 		this.alreadyMoved = true;
+	}
+
+	@Override
+	public ArrayList<Case> getCheckCases(Board board, Case pos)
+	{
+		this.validMoves = new ArrayList<>();
+		this.makeCheckCases(board, pos);
+		return this.validMoves;
 	}
 
 }

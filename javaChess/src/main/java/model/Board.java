@@ -37,14 +37,7 @@ public class Board
 
 	public Board(Board board)
 	{
-		/** TODO */
 		this.cases = board.getCases();
-	}
-
-	public boolean isValidMove()
-	{
-		/** TODO */
-		return true;
 	}
 
 	public ArrayList<ArrayList<Case>> getCases()

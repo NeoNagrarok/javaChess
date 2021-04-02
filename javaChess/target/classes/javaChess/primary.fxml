@@ -13,6 +13,7 @@
    <children>
       <Label text="Primary View" />
       <Button fx:id="primaryButton" onAction="#switchToSecondary" text="Switch to Secondary View" />
+      <Button mnemonicParsing="false" onAction="#undo" text="Undo" />
       <GridPane fx:id="board" alignment="CENTER" gridLinesVisible="true">
         <columnConstraints>
           <ColumnConstraints fx:id="column0" hgrow="SOMETIMES" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
